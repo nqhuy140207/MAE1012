@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Đề Thi AI và Ma Trận Nghịch Đảo</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f5f7fb;
+    margin:0;
+    padding:20px;
+    color:#222;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    color:#004080;
+}
+
+.section-title{
+    background:#004080;
+    color:white;
+    padding:10px;
+    border-radius:8px;
+    margin-top:40px;
+}
+
+.question{
+    background:white;
+    padding:20px;
+    margin-top:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.question h3{
+    margin-top:0;
+}
+
+.option{
+    border:2px solid #ccc;
+    border-radius:8px;
+    padding:12px;
+    margin-top:10px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.option:hover{
+    background:#eef5ff;
+}
+
+.correct{
+    background:#d4ffd4;
+    border-color:green;
+}
+
+.wrong{
+    background:#ffd6d6;
+    border-color:red;
+}
+
+.explanation{
+    margin-top:15px;
+    padding:15px;
+    background:#fff8dc;
+    border-left:6px solid orange;
+    display:none;
+}
+
+.score-board{
+    position:sticky;
+    top:0;
+    background:#002244;
+    color:white;
+    padding:15px;
+    z-index:1000;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+button{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:20px;
+    font-size:16px;
+}
+
+button:hover{
+    background:#004c99;
+}
+
+.footer{
+    text-align:center;
+    margin-top:50px;
+    color:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="score-board">
+    <h2>Điểm: <span id="score">0</span> / 20</h2>
+</div>
+
+<h1>ĐỀ THI TƯƠNG TÁC<br>AI VÀ MA TRẬN NGHỊCH ĐẢO</h1>
+
+<div id="quiz"></div>
+
+<button onclick="downloadResult()">📥 Tải kết quả bài làm</button>
+
+<div class="footer">
+    <p><b>AI không thay thế thầy — AI nhân bản thầy.</b></p>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+/* ============================
+LÝ THUYẾT
+============================ */
+
+{
+type:"Lý thuyết",
+q:"Ba trụ cột của AI theo bài giảng là gì?",
+options:[
+"Prompt – Context – Harnessing",
+"AI – ML – DL",
+"Claude – Gemini – GPT",
+"Input – Output – Model"
+],
+answer:0,
+explain:"Ba trụ cột gồm Prompt (ra lệnh), Context (ngữ cảnh), Harnessing (ghì cương AI).",
+tip:"Nhớ hình ảnh cưỡi ngựa AI → phải có ghì cương = Harnessing."
+},
+
+{
+type:"Lý thuyết",
+q:"Vai trò mới của người thầy trong thời đại AI là gì?",
+options:[
+"Giảng bài liên tục",
+"Soạn PowerPoint đẹp",
+"Chỉ cách học và điều khiển AI",
+"Đọc giáo trình"
+],
+answer:2,
+explain:"Người thầy chuyển từ người truyền đạt sang người định hướng tư duy.",
+tip:"Từ khóa: “Thầy không dạy — thầy chỉ cách”."
+},
+
+{
+type:"Lý thuyết",
+q:"Harnessing có nghĩa là gì?",
+options:[
+"Tắt AI",
+"Để AI tự hoạt động",
+"Điều khiển và ghì cương AI",
+"Cài phần mềm AI"
+],
+answer:2,
+explain:"Harnessing là kiểm soát AI như cưỡi ngựa phải giữ cương.",
+tip:"Liên tưởng dây cương ngựa."
+},
+
+{
+type:"Lý thuyết",
+q:"AI clone giáo viên nhằm mục đích gì?",
+options:[
+"Thay thế giáo viên",
+"Nhân bản phong cách dạy",
+"Loại bỏ trường học",
+"Giảm bài tập"
+],
+answer:1,
+explain:"AI có thể học phong cách giảng để dạy cho nhiều học sinh.",
+tip:"Clone = sao chép phong cách."
+},
+
+{
+type:"Lý thuyết",
+q:"Theo bài giảng, học sinh nên học điều gì?",
+options:[
+"Học thuộc",
+"Học mẹo",
+"Học tư duy",
+"Học slide"
+],
+answer:2,
+explain:"Mục tiêu là học cách suy nghĩ và tư duy.",
+tip:"Từ khóa: tư duy > thuộc lòng."
+},
+
+/* ============================
+DỄ
+============================ */
+
+{
+type:"Dễ",
+q:"Tính định thức của ma trận \\(A=\\begin{pmatrix}2&1\\\\1&3\\end{pmatrix}\\)",
+options:["5","6","7","4"],
+answer:0,
+explain:"\\(det(A)=2\\cdot3-1\\cdot1=6-1=5\\)",
+tip:"Ma trận 2x2: ad-bc"
+},
+
+{
+type:"Dễ",
+q:"Điều kiện để ma trận có nghịch đảo là gì?",
+options:[
+"\\(det(A)=0\\)",
+"\\(det(A)\\neq0\\)",
+"Ma trận vuông",
+"Ma trận đối xứng"
+],
+answer:1,
+explain:"Ma trận chỉ khả nghịch khi định thức khác 0.",
+tip:"Nếu det=0 → chia cho 0 → vô nghĩa."
+},
+
+{
+type:"Dễ",
+q:"Công thức nghịch đảo ma trận là:",
+options:[
+"\\(A^{-1}=det(A)adj(A)\\)",
+"\\(A^{-1}=\\frac1{det(A)}adj(A)\\)",
+"\\(A^{-1}=A^T\\)",
+"\\(A^{-1}=A^2\\)"
+],
+answer:1,
+explain:"Đây là công thức chuẩn.",
+tip:"Luôn có 1/det(A)."
+},
+
+{
+type:"Dễ",
+q:"Minor là gì?",
+options:[
+"Định thức ma trận con",
+"Ma trận chuyển vị",
+"Nghịch đảo",
+"Định thức chính"
+],
+answer:0,
+explain:"Minor là định thức sau khi bỏ hàng và cột.",
+tip:"Minor = ma trận con."
+},
+
+{
+type:"Dễ",
+q:"Cofactor được tính bằng:",
+options:[
+"\\(M_{ij}\\)",
+"\\((-1)^{i+j}M_{ij}\\)",
+"\\(det(A)\\)",
+"\\(A^T\\)"
+],
+answer:1,
+explain:"Cofactor có thêm dấu \\((-1)^{i+j}\\).",
+tip:"Nhớ bàn cờ dấu + -."
+},
+
+/* ============================
+TRUNG BÌNH
+============================ */
+
+{
+type:"Trung bình",
+q:"Nghịch đảo của \\(\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}\\) là:",
+options:[
+"\\(\\begin{pmatrix}-2&1\\\\1.5&-0.5\\end{pmatrix}\\)",
+"\\(\\begin{pmatrix}2&-1\\\\-1&2\\end{pmatrix}\\)",
+"\\(\\begin{pmatrix}4&-2\\\\-3&1\\end{pmatrix}\\)",
+"Không tồn tại"
+],
+answer:0,
+explain:"det=-2 nên nghịch đảo đúng là đáp án A.",
+tip:"Đổi chéo, đổi dấu, chia det."
+},
+
+{
+type:"Trung bình",
+q:"Nếu \\(det(A)=7\\), thì \\(det(A^{-1})\\) bằng:",
+options:["7","-7","1/7","0"],
+answer:2,
+explain:"\\(det(A^{-1})=1/det(A)\\)",
+tip:"Nghịch đảo → nghịch luôn định thức."
+},
+
+{
+type:"Trung bình",
+q:"Adjugate là:",
+options:[
+"Ma trận nghịch đảo",
+"Ma trận cofactor",
+"Chuyển vị của ma trận cofactor",
+"Minor"
+],
+answer:2,
+explain:"adj(A)=C^T",
+tip:"Adj = transpose cofactor."
+},
+
+{
+type:"Trung bình",
+q:"Nếu \\(A A^{-1}=I\\), thì I là gì?",
+options:[
+"Ma trận không",
+"Ma trận đơn vị",
+"Định thức",
+"Ma trận tam giác"
+],
+answer:1,
+explain:"I là identity matrix.",
+tip:"I = Identity."
+},
+
+{
+type:"Trung bình",
+q:"\\(det\\begin{pmatrix}3&2\\\\5&4\\end{pmatrix}\\)=",
+options:["2","12","4","1"],
+answer:0,
+explain:"3×4−2×5=12−10=2",
+tip:"ad−bc"
+},
+
+/* ============================
+KHÓ
+============================ */
+
+{
+type:"Khó",
+q:"Nếu \\(A^{-1}=A\\), thì A gọi là:",
+options:[
+"Ma trận trực giao",
+"Ma trận involutory",
+"Ma trận singular",
+"Ma trận tam giác"
+],
+answer:1,
+explain:"Ma trận involutory thỏa \\(A^2=I\\).",
+tip:"Tự nghịch đảo chính nó."
+},
+
+{
+type:"Khó",
+q:"Nếu \\(det(A)=0\\), điều gì xảy ra?",
+options:[
+"A có nghịch đảo",
+"A không khả nghịch",
+"A đối xứng",
+"A tam giác"
+],
+answer:1,
+explain:"Không thể chia cho 0 trong công thức nghịch đảo.",
+tip:"det=0 → mất thông tin."
+},
+
+{
+type:"Khó",
+q:"Tính \\(det\\begin{pmatrix}1&2&3\\\\0&1&4\\\\5&6&0\\end{pmatrix}\\)",
+options:["1","-1","5","0"],
+answer:0,
+explain:"Khai triển định thức được 1.",
+tip:"Khai triển theo hàng có số 0."
+},
+
+{
+type:"Khó",
+q:"Nếu \\(A\\) là ma trận trực giao thì:",
+options:[
+"\\(A^{-1}=A^T\\)",
+"\\(A^{-1}=A\\)",
+"\\(A^2=0\\)",
+"\\(det(A)=0\\)"
+],
+answer:0,
+explain:"Tính chất cơ bản của ma trận trực giao.",
+tip:"Orthogonal → transpose = inverse."
+},
+
+{
+type:"Khó",
+q:"Cho \\(A=\\begin{pmatrix}2&0\\\\0&5\\end{pmatrix}\\), thì \\(A^{-1}\\)=",
+options:[
+"\\(\\begin{pmatrix}1/2&0\\\\0&1/5\\end{pmatrix}\\)",
+"\\(\\begin{pmatrix}2&0\\\\0&5\\end{pmatrix}\\)",
+"\\(\\begin{pmatrix}5&0\\\\0&2\\end{pmatrix}\\)",
+"Không tồn tại"
+],
+answer:0,
+explain:"Ma trận chéo → nghịch đảo từng phần tử đường chéo.",
+tip:"Diagonal matrix rất dễ đảo."
+}
+
+];
+
+let score = 0;
+let answered = 0;
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+
+    const div = document.createElement("div");
+    div.className = "question";
+
+    div.innerHTML = `
+        <h3>Câu ${index+1} (${q.type})</h3>
+        <p>${q.q}</p>
+    `;
+
+    q.options.forEach((opt,i)=>{
+
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.innerHTML = opt;
+
+        btn.onclick = ()=>{
+
+            if(div.classList.contains("done")) return;
+
+            div.classList.add("done");
+
+            if(i===q.answer){
+                btn.classList.add("correct");
+                score++;
+            }else{
+                btn.classList.add("wrong");
+            }
+
+            const all = div.querySelectorAll(".option");
+
+            all[q.answer].classList.add("correct");
+
+            document.getElementById("score").innerText = score;
+
+            exp.style.display="block";
+
+            MathJax.typeset();
+        };
+
+        div.appendChild(btn);
+
+    });
+
+    const exp = document.createElement("div");
+    exp.className="explanation";
+
+    exp.innerHTML = `
+        <b>✅ Đáp án đúng:</b> ${q.options[q.answer]}<br><br>
+        <b>📘 Giải thích:</b> ${q.explain}<br><br>
+        <b>⚡ Mẹo làm nhanh:</b> ${q.tip}
+    `;
+
+    div.appendChild(exp);
+
+    quiz.appendChild(div);
+
+});
+
+function downloadResult(){
+
+    let text = `
+KẾT QUẢ BÀI THI
+======================
+
+Điểm số: ${score}/20
+
+AI không thay thế thầy.
+AI nhân bản thầy.
+
+`;
+
+    const blob = new Blob([text], {type:"text/plain"});
+
+    const a = document.createElement("a");
+
+    a.href = URL.createObjectURL(blob);
+
+    a.download = "ket_qua_bai_thi.txt";
+
+    a.click();
+}
+
+</script>
+
+</body>
+</html>
